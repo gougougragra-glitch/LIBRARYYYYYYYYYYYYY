@@ -10489,12 +10489,26 @@ function Library:CreateWindow(WindowInfo)
             Tab:Show()
         end
 
+        -- ✅ AJOUT : Création du contour blanc (invisible par défaut)
+        local hoverStroke = Instance.new("UIStroke")
+        hoverStroke.Color = Color3.fromRGB(255, 255, 255)
+        hoverStroke.Thickness = 1.5
+        hoverStroke.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+        hoverStroke.Transparency = 1
+        hoverStroke.Parent = TabButton
+
         TabButton.MouseEnter:Connect(function()
             Tab:Hover(true)
+            -- ✅ AJOUT : Affiche le contour
+            if hoverStroke then hoverStroke.Transparency = 0 end
         end)
+        
         TabButton.MouseLeave:Connect(function()
             Tab:Hover(false)
+            -- ✅ AJOUT : Cache le contour
+            if hoverStroke then hoverStroke.Transparency = 1 end
         end)
+        
         TabButton.MouseButton1Click:Connect(Tab.Show)
 
         Tab.Container = TabContainer
@@ -10504,7 +10518,6 @@ function Library:CreateWindow(WindowInfo)
 
         return Tab
     end
-
     function Window:AddDialog(Idx, Info)
         Info = Library:Validate(Info, Templates.Dialog)
 
